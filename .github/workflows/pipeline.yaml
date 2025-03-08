@@ -6,6 +6,7 @@ on:
       - main
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
@@ -24,8 +25,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t your-dockerhub-username/nodejs-app:latest .
-          docker push your-dockerhub-username/nodejs-app:latest
+          docker build -t puunvach/nodejs-app:latest .
+          docker push puunvach/nodejs-app:latest
 
   deploy:
     needs: build
