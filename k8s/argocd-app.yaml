@@ -4,14 +4,15 @@ metadata:
   name: nodejs-app
   namespace: argocd
 spec:
-  destination:
-    namespace: default
-    server: https://kubernetes.default.svc
+  project: default  # ✅ Add this line to specify the project
   source:
-    repoURL: 'https://github.com/your-username/nodejs-k8s.git'
-    targetRevision: main
-    path: k8s
+    repoURL: 'https://github.com/Puun2545/Pipeline-Test-Interview.git'
+    targetRevision: HEAD
+    path: 'path-to-k8s-manifests'  # Update this with the correct path in your repo
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: nodejs
   syncPolicy:
     automated:
-      selfHeal: true
       prune: true
+      selfHeal: true
