@@ -1,0 +1,13 @@
+{
+    "name": "nodejs-k8s",
+    "version": "1.0.0",
+    "description": "Node.js app running on Kubernetes",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2"
+    }
+  }
+  
