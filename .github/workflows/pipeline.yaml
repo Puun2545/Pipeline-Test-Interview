@@ -29,6 +29,7 @@ jobs:
           docker build -t puunvach/nodejs-app:latest .
           docker push puunvach/nodejs-app:latest
 
+  
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -37,8 +38,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Install ArgoCD CLI
+        run: |
+          curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x argocd-linux-amd64
+          sudo mv argocd-linux-amd64 /usr/local/bin/argocd
+          argocd version --client
+
       - name: Sync Application in ArgoCD
         run: |
           argocd login ${{ secrets.ARGOCD_SERVER }} --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }} --insecure
           argocd app sync your-app-name
           argocd app wait your-app-name --health --sync
+
