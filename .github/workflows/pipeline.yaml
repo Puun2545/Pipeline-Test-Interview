@@ -25,7 +25,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t puunvach/nodejs-app:latest ..
+          cd src
+          docker build -t puunvach/nodejs-app:latest .
           docker push puunvach/nodejs-app:latest
 
   deploy:
