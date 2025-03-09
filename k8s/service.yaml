@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: nodejs-service
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"  # หรือใช้ "elb"
     service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
 spec:
   selector:
