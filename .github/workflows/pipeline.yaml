@@ -6,48 +6,64 @@ on:
       - main
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
-
+    outputs:
+      image_tag: ${{ github.sha }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: puunvach
-          password: 123456Puun
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and Push Docker Image
         run: |
           cd src
-          docker build -t puunvach/nodejs-app:latest .
-          docker push puunvach/nodejs-app:latest
+          docker build -t puunvach/nodejs-app:${{ github.sha }} .
+          docker push puunvach/nodejs-app:${{ github.sha }}
 
-  
-  deploy:
-    needs: build
+
+  setDeploymentEnv:
     runs-on: ubuntu-latest
-
+    needs: build
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install ArgoCD CLI
+      - name: Update Image in Kubernetes Manifest
         run: |
-          curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-          chmod +x argocd-linux-amd64
-          sudo mv argocd-linux-amd64 /usr/local/bin/argocd
-          argocd version --client
+          sed -i 's|puunvach/nodejs-app:.*|puunvach/nodejs-app:${{ github.sha }}|' k8s/deployment.yaml
 
-      - name: Sync Application in ArgoCD
+      - name: Commit & Push Changes
         run: |
-          argocd login ${{ secrets.ARGOCD_SERVER }} --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }} --insecure
-          argocd app sync your-app-name
-          argocd app wait your-app-name --health --sync
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add k8s/deployment.yaml
+          git commit -m "Update image to puunvach/nodejs-app:${{ github.sha }}"
+          git push
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: setDeploymentEnv
+    steps:
+      - name: Set Execute Permission for Script
+        run: chmod +x scripts/deploy-argocd.sh
+
+      - name: Run Deployment Script
+        env:
+          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+          ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
+          ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
+        run: ./scripts/deploy-argocd.sh
+
+  serviceCheck:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Set Execute Permission for Script
+        run: kubectl get svc nodejs-service
 
