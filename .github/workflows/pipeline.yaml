@@ -54,8 +54,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: setDeploymentEnv
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+        
       - name: Set Execute Permission for Script
-        run: ls 
+        run: chmod +x scripts/deploy-argocd.sh
 
       - name: Run Deployment Script
         env:
