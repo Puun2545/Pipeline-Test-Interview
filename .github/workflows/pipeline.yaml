@@ -55,7 +55,7 @@ jobs:
         run: ls -R
 
       - name: Set Execute Permission for Script
-        run: chmod +x scripts/deploy-argocd.sh
+        run: chmod +x scripts/deploy-argo.sh
 
       - name: Run Deployment Script
         env:
