@@ -50,7 +50,15 @@ jobs:
           git add k8s/deployment.yaml
           git commit -m "Update image to puunvach/nodejs-app:${{ github.sha }}"
           git push
-        
+
+      - name: Install ArgoCD CLI
+        run: |
+          curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x /usr/local/bin/argocd
+
+      - name: Verify ArgoCD CLI
+        run: argocd version --client
+  
       - name: Debug - List files
         run: ls -R
 
