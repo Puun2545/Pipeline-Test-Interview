@@ -28,6 +28,9 @@ jobs:
             echo "TAG_VERSION=latest" >> $GITHUB_ENV
           fi
 
+      - name: Debug - Show TAG_VERSION
+        run: echo "Tag Version = $TAG_VERSION"
+  
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
