@@ -56,7 +56,7 @@ jobs:
     steps:
       - name: Set Execute Permission for Script
         run: |
-          cd ../..
+          pwd
           chmod +x scripts/deploy-argo.sh
 
       - name: Run Deployment Script
