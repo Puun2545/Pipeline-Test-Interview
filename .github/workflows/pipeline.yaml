@@ -57,7 +57,7 @@ jobs:
       - name: Set Execute Permission for Script
         run: |
           cd ../..
-          chmod +x ./scripts/deploy-argo.sh
+          chmod +x scripts/deploy-argo.sh
 
       - name: Run Deployment Script
         env:
@@ -66,7 +66,7 @@ jobs:
           ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
         run: |
           pwd
-          ./scripts/deploy-argo.sh
+          scripts/deploy-argo.sh
 
   serviceCheck:
     runs-on: ubuntu-latest
