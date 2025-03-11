@@ -4,32 +4,20 @@ on:
   push:
     branches:
       - main
-    tags:
-      - "v1.0.0"  # รองรับการ Push Tag เช่น v1.0.0
 
 env:
   IMAGE_NAME: puunvach/nodejs-app
+  TAG_VERSION : 1.0.0
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      image_tag: ${{ github.ref_name }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Define Image Tag
-        id: set_tag
-        run: |
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            echo "TAG_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          else
-            echo "TAG_VERSION=latest" >> $GITHUB_ENV
-          fi
-
       - name: Debug - Show TAG_VERSION
-        run: echo "Tag Version = $TAG_VERSION"
+        run: echo "Tag Version = ${{ env.TAG_VERSION }}"
   
       - name: Login to DockerHub
         uses: docker/login-action@v2
