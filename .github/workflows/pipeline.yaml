@@ -57,6 +57,8 @@ jobs:
       - name: Set Execute Permission for Script
         run: |
           pwd
+          ls .
+          cd scripts
           chmod +x scripts/deploy-argo.sh
 
       - name: Run Deployment Script
