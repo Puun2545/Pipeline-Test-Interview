@@ -55,11 +55,7 @@ jobs:
     needs: setDeploymentEnv
     steps:
       - name: Set Execute Permission for Script
-        run: |
-          pwd
-          ls .
-          cd scripts
-          chmod +x scripts/deploy-argo.sh
+        run: ls .
 
       - name: Run Deployment Script
         env:
