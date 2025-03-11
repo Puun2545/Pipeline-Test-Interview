@@ -30,9 +30,13 @@ jobs:
   setDeploymentEnv:
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Image in Kubernetes Manifest
         run: |
@@ -49,8 +53,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: setDeploymentEnv
-    permissions:
-      contents: write
     steps:
       - name: Set Execute Permission for Script
         run: chmod +x scripts/deploy-argocd.sh
