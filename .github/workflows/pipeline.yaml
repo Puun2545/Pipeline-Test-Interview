@@ -55,14 +55,14 @@ jobs:
     needs: setDeploymentEnv
     steps:
       - name: Set Execute Permission for Script
-        run: chmod +x scripts/deploy-argocd.sh
+        run: chmod +x scripts/deploy-argo.sh
 
       - name: Run Deployment Script
         env:
           ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
           ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
           ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
-        run: ./scripts/deploy-argocd.sh
+        run: ./scripts/deploy-argo.sh
 
   serviceCheck:
     runs-on: ubuntu-latest
