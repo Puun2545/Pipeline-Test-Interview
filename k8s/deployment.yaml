@@ -18,7 +18,7 @@ spec:
         - name: regcred
       containers:
         - name: nodejs
-          image: puunvach/nodejs-app:1f3d85dc10bd09d53970473fbaa04d6754beae22
+          image: puunvach/nodejs-app:42a87c070b61cc693da7dddb74ee4513e9ad3873
           ports:
             - containerPort: 3000
           resources:
