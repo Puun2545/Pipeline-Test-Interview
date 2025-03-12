@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("Hello from Node.js on Kubernetes! Im Puun Luv U Deploy by ArgoCD tag : puun.vach.cdrf");
+  res.send("Hello from Node.js on Kubernetes! Im Puun Luv U Deploy by ArgoCD");
 });
 
 app.listen(port, () => {
